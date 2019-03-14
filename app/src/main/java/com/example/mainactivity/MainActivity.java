@@ -31,5 +31,20 @@ public class MainActivity extends AppCompatActivity {
         client.execute();
     }
 
+    public void onClickCalc(View v) {
+        String requestMsg = mn.getText().toString();
+        char[] matrikelnummer = requestMsg.toCharArray();
+
+        int quersumme = 0;
+
+        for(char charInString : matrikelnummer) {
+            quersumme += Integer.parseInt(Character.toString(charInString));
+        }
+
+        String binärQuersumme = Integer.toBinaryString(quersumme);
+        calculation.setText("Quersumme lautet: " + quersumme + "\n" + "Quersumme (binär) lautet: " + binärQuersumme);
+
+    }
+
 
 }
