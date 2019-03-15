@@ -10,7 +10,6 @@ public class MainActivity extends AppCompatActivity {
 
     private EditText mn;
     private TextView answer;
-    private TextView calculation;
     private Client client;
 
     @Override
@@ -20,29 +19,35 @@ public class MainActivity extends AppCompatActivity {
 
         mn =(EditText)findViewById(R.id.matrikelnummer);
         answer =(TextView)findViewById(R.id.textViewAnswer);
-        calculation = (TextView)findViewById(R.id.textViewCalculation);
-
 
     }
 
+    //onClick to send Matrikelnummer to the server
     public void onClickAbschicken(View v) {
+        //LogMessage nur für Testzwecke
         Log.v("LogMessage", "I am here");
-        client = new Client(mn, answer, calculation);
+        client = new Client(mn, answer);
         client.execute();
     }
 
+    //method to do the calculation of the Quersumme and the binary Quersumme
     public void onClickCalc(View v) {
+
+        //Matrikelnummer als String speichern
         String requestMsg = mn.getText().toString();
         char[] matrikelnummer = requestMsg.toCharArray();
 
+        //calculateQuersumme berechnen = 1+2+3+4+5...
         int quersumme = 0;
 
-        for(char charInString : matrikelnummer) {
-            quersumme += Integer.parseInt(Character.toString(charInString));
+        for (int i = 0; i < matrikelnummer.length; i++) {
+            char charInString = matrikelnummer[i];
+            quersumme = quersumme + Integer.parseInt(Character.toString(charInString));
         }
 
+        //binary
         String binärQuersumme = Integer.toBinaryString(quersumme);
-        calculation.setText("Quersumme lautet: " + quersumme + "\n" + "Quersumme (binär) lautet: " + binärQuersumme);
+        answer.setText("Quersumme lautet: " + quersumme + "\n" + "Quersumme (binär) lautet: " + binärQuersumme);
 
     }
 

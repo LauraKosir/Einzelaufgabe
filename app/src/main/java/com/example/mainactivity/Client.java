@@ -1,10 +1,8 @@
 package com.example.mainactivity;
-
 import android.os.AsyncTask;
 import android.util.Log;
 import android.widget.EditText;
 import android.widget.TextView;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.InputStream;
@@ -22,14 +20,13 @@ public class Client extends AsyncTask<Void, Void, Void> {
 
     private EditText mn;
     private TextView answer;
-    private TextView calculation;
 
     private String message;
 
-    public Client(EditText mn, TextView answer, TextView calculation) {
+    //constructor for the client
+    public Client(EditText mn, TextView answer) {
         this.mn = mn;
         this.answer = answer;
-        this.calculation = calculation;
     }
 
     private void run()
@@ -41,7 +38,7 @@ public class Client extends AsyncTask<Void, Void, Void> {
             InetAddress address = InetAddress.getByName(host);
             socket = new Socket(address, port);
 
-            //Send the message to the server
+            //send message to the server
             os = socket.getOutputStream();
             OutputStreamWriter osw = new OutputStreamWriter(os);
             BufferedWriter bw = new BufferedWriter(osw);
@@ -50,7 +47,7 @@ public class Client extends AsyncTask<Void, Void, Void> {
             InputStreamReader isr = new InputStreamReader(is);
             BufferedReader br = new BufferedReader(isr);
 
-            //String number = "2";
+            //Matrikelnummer to String
             String requestMsg = mn.getText().toString();
 
             bw.write(requestMsg);
@@ -58,7 +55,7 @@ public class Client extends AsyncTask<Void, Void, Void> {
             bw.flush();
             Log.v("LogMessage","Message sent to the server : "+requestMsg);
 
-            //Get the return message from the server
+            //response from the server
             String responseMsg = br.readLine();
             Log.v("LogMessage","Message received from the server : " +responseMsg);
             message = responseMsg;
@@ -72,12 +69,14 @@ public class Client extends AsyncTask<Void, Void, Void> {
         }
     }
 
+    //does actual Task
     @Override
     protected Void doInBackground(Void... voids) {
         run();
         return null;
     }
 
+    //delivers back the message
     @Override
     protected void onPostExecute(Void aVoid) {
         answer.setText(message);
